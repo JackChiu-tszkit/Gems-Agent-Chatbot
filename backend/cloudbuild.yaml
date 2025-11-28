@@ -1,0 +1,30 @@
+# Cloud Build configuration for deploying to Cloud Run
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/gems-agent-api:$SHORT_SHA', '.']
+  
+  # Push the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/gems-agent-api:$SHORT_SHA']
+  
+  # Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'gems-agent-api'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/gems-agent-api:$SHORT_SHA'
+      - '--region'
+      - 'europe-north1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--set-env-vars'
+      - 'GOOGLE_CLOUD_PROJECT=$PROJECT_ID,VERTEX_AI_LOCATION=europe-north1,VERTEX_AGENT_ID=your-agent-id'
+
+images:
+  - 'gcr.io/$PROJECT_ID/gems-agent-api:$SHORT_SHA'
+

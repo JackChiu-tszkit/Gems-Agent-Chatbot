@@ -1,0 +1,72 @@
+:root {
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #1a1a1a;
+  background-color: #ffffff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  
+  /* Randstad Digital 品牌色 - 蓝色主题 */
+  --randstad-blue: #0066CC;
+  --randstad-blue-dark: #0052A3;
+  --randstad-blue-light: #3385D6;
+  --randstad-blue-bg: #F0F7FF;
+  
+  --primary: var(--randstad-blue);
+  --primary-hover: var(--randstad-blue-dark);
+  --border: rgba(0, 102, 204, 0.2);
+  --muted: #666666;
+  --bg-light: #F8F9FA;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  /* 选项 1: 纯白色背景（简洁专业） */
+  background: #ffffff;
+  
+  /* 选项 2: 非常浅的灰色背景（现代感） */
+  /* background: #FAFBFC; */
+  
+  /* 选项 3: 微妙的渐变（从白色到极浅蓝） */
+  /* background: linear-gradient(180deg, #ffffff 0%, #F8FAFC 100%); */
+  
+  /* 选项 4: 浅灰色到白色渐变 */
+  /* background: linear-gradient(135deg, #F5F7FA 0%, #ffffff 100%); */
+  
+  padding: 2rem;
+  color: inherit;
+}
+
+#root {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+a {
+  color: var(--randstad-blue);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--randstad-blue-dark);
+}
+
+textarea,
+button {
+  font-family: inherit;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+}

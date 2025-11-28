@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="no">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="GEMS Agent Chat UI – Vertex AI + RAG tilgjengelig for Randstad Digital via Google Workspace."
+    />
+    <title>GEMS Agent Chat</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+      // 添加错误处理，帮助调试 Google Sign-In 问题
+      window.addEventListener('error', function(e) {
+        if (e.message && e.message.includes('google')) {
+          console.error('Google Sign-In 错误:', e.message, e.filename, e.lineno);
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
