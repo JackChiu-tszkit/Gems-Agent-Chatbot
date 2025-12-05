@@ -50,6 +50,69 @@ When you start a conversation, the GEMS Agent introduces itself with:
 
 The interface supports markdown rendering for agent responses, making it easy to display formatted text, lists, and structured information.
 
+## Architecture & Technology Stack
+
+### LangChain RAG Integration
+
+The backend implements a **Retrieval-Augmented Generation (RAG)** workflow using the LangChain framework, combining:
+
+1. **Custom Retriever** (`VertexRAGEngineRetriever`):
+   - Integrates with Vertex AI Managed RAG Engine
+   - Retrieves top-k relevant documents from the RAG Corpus based on user queries
+   - Converts retrieved contexts into LangChain `Document` objects
+
+2. **Custom LLM** (`VertexCustomEndpoint`):
+   - Connects to your fine-tuned Gemini model deployed on Vertex AI Endpoint
+   - Handles model invocation with proper input/output formatting
+   - Supports dynamic model ID retrieval from endpoint configuration
+
+3. **LangChain Expression Language (LCEL) Chain**:
+   - Orchestrates the RAG workflow: `Retriever → Prompt Template → Fine-tuned LLM → Response`
+   - Automatically combines retrieved context with user questions
+   - Ensures responses are grounded in the retrieved documents
+
+### Fine-Tuned Model Integration
+
+The system prioritizes using your **fine-tuned Gemini model** for generation:
+
+- **Benefits**: More standardized, business-aligned responses tailored to your domain
+- **Configuration**: Set `FINE_TUNED_ENDPOINT_ID` and `FINE_TUNED_MODEL_ID` in environment variables
+- **Fallback**: Automatically falls back to standard Gemini models if fine-tuned model is unavailable
+- **Implementation**: Uses `vertexai.generative_models.GenerativeModel` for fine-tuned Gemini models
+
+### LLM Integration Flow
+
+```
+User Query
+    ↓
+[LangChain RAG Chain]
+    ├─→ Vertex AI RAG Engine (Retrieve relevant documents)
+    ├─→ Build Enhanced Prompt (Context + Question)
+    └─→ Fine-tuned Model Endpoint (Generate response)
+    ↓
+Response to User
+```
+
+**For Agent Self-Questions** (questions about the agent itself):
+- Uses standard Gemini models with system instructions
+- Skips RAG retrieval for efficiency
+- Provides direct answers about agent capabilities
+
+**For Company Data Questions**:
+- Uses LangChain RAG Chain with fine-tuned model
+- Retrieves relevant documents from RAG Corpus
+- Generates context-aware responses using fine-tuned model
+
+### Key Components
+
+- **Frontend**: React + TypeScript + Vite
+- **Backend**: FastAPI (Python)
+- **RAG Engine**: Vertex AI Managed RAG
+- **LLM Framework**: LangChain with custom components
+- **Fine-tuned Model**: Vertex AI Fine-tuned Gemini
+- **Authentication**: Google Workspace OAuth
+- **Deployment**: Cloud Run (unified frontend + backend)
+
 ## Configuration
 
 ### Local Development
@@ -66,11 +129,22 @@ VITE_GOOGLE_CLIENT_ID=YOUR_GOOGLE_OAUTH_CLIENT_ID
 Create `backend/.env` file:
 
 ```
+# Required Configuration
 GOOGLE_CLOUD_PROJECT=your-project-id
 VERTEX_AI_LOCATION=europe-north1
 RAG_CORPUS_ID=your-rag-corpus-id
 PORT=8080
+
+# Fine-tuned Model Configuration (Optional but Recommended)
+FINE_TUNED_ENDPOINT_ID=your-endpoint-id
+FINE_TUNED_MODEL_ID=your-model-id
+USE_FINE_TUNED_MODEL=true
+
+# Gemini Model Configuration (Optional)
+GEMINI_MODEL=gemini-2.5-pro
 ```
+
+**Note**: The system will automatically use LangChain RAG Chain with fine-tuned model if `FINE_TUNED_ENDPOINT_ID` is configured. Otherwise, it falls back to standard Gemini models.
 
 ## Deploy to Cloud Run
 
