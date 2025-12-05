@@ -57,13 +57,13 @@ echo "🔨 Building and pushing Docker image..."
 echo "   This may take a few minutes..."
 echo ""
 
-# 构建参数
+# Build arguments
 BUILD_ARGS=""
 if [ ! -z "$GOOGLE_CLIENT_ID" ]; then
     BUILD_ARGS="--build-arg VITE_GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}"
 fi
 
-# 构建并推送镜像
+# Build and push image
 gcloud builds submit \
     --tag ${IMAGE_NAME} \
     ${BUILD_ARGS} \

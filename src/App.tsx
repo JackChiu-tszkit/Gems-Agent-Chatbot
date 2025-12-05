@@ -60,7 +60,7 @@ function App() {
       
       if (!email.endsWith(EMAIL_DOMAIN)) {
         setUser(null)
-        setAuthError('Kun ansatte med @randstad.no kan bruke GEMS Agent.')
+        setAuthError('Only employees with @randstad.no accounts can use GEMS Agent.')
         console.warn('Email does not match required domain:', email)
         return
       }
@@ -74,7 +74,7 @@ function App() {
       console.log('Login successful, user:', decoded.name || email)
     } catch (err) {
       console.error('Error processing login:', err)
-      setAuthError('Google pålogging feilet, prøv igjen.')
+      setAuthError('Google sign-in failed, please try again.')
     }
   }, [])
 
@@ -153,7 +153,7 @@ function App() {
         console.error('Failed to initialize Google Sign-In:', error)
         // Reset flag on failure to allow retry
         isGoogleSignInInitialized.current = false
-        setAuthError('Kunne ikke laste Google pålogging. Prøv å oppdatere siden.')
+        setAuthError('Could not load Google sign-in. Please refresh the page.')
       }
     }
 
@@ -177,7 +177,7 @@ function App() {
         if (checkInterval) clearInterval(checkInterval)
         if (!window.google?.accounts?.id) {
           console.error('Google Identity Services failed to load after 10 seconds')
-          setAuthError('Kunne ikke laste Google pålogging. Sjekk internettforbindelsen eller oppdater siden.')
+          setAuthError('Could not load Google sign-in. Check your internet connection or refresh the page.')
         }
       }, 10000)
     }
@@ -262,7 +262,7 @@ function App() {
       })
 
       if (!replyText) {
-        throw new Error('Svarformatet mangler reply-feltet.')
+        throw new Error('Response format is missing the reply field.')
       }
 
       setMessages((prev) => [
@@ -282,7 +282,7 @@ function App() {
         timestamp: new Date().toISOString(),
       }
       console.error('[GEMS Agent] Error details:', errorDetails)
-      setError('Kunne ikke hente svar fra GEMS Agent. Prøv igjen.')
+      setError('Could not get response from GEMS Agent. Please try again.')
     } finally {
       setIsLoading(false)
     }
@@ -297,10 +297,10 @@ function App() {
 
   const statusBanner = useMemo(() => {
     if (!isClientIdConfigured) {
-      return 'Sett VITE_GOOGLE_CLIENT_ID i miljøvariablene før bruk.'
+      return 'Set VITE_GOOGLE_CLIENT_ID in environment variables before use.'
     }
     if (!isChatApiConfigured) {
-      return 'Oppdater VITE_CHAT_API_URL til din Cloud Run chat-endepunkt.'
+      return 'Update VITE_CHAT_API_URL to your Cloud Run chat endpoint.'
     }
     return null
   }, [isChatApiConfigured, isClientIdConfigured])
@@ -316,7 +316,7 @@ function App() {
           />
           <div className="brand-text">
             <p className="product">GEMS Agent</p>
-            <p className="subtitle">Vertex AI + RAG på Randstad Digital data</p>
+            <p className="subtitle">Vertex AI + RAG on Randstad Digital data</p>
           </div>
         </div>
         {isAuthorized && (
@@ -327,7 +327,7 @@ function App() {
               <span className="user-email">{user?.email}</span>
       </div>
             <button type="button" className="ghost-button" onClick={handleSignOut}>
-              Logg ut
+              Sign out
         </button>
           </div>
         )}
@@ -337,15 +337,15 @@ function App() {
 
       {!isAuthorized ? (
         <section className="auth-card">
-          <h2>Logg inn med Google Workspace</h2>
-          <p>Tilgang er begrenset til @randstad.no-kontoer.</p>
+          <h2>Sign in with Google Workspace</h2>
+          <p>Access is restricted to @randstad.no accounts.</p>
           <div ref={loginButtonRef} aria-live="polite" style={{ minHeight: '40px' }} />
           {!isClientIdConfigured && (
-            <p className="error">Google Client ID er ikke konfigurert.</p>
+            <p className="error">Google Client ID is not configured.</p>
           )}
           {isClientIdConfigured && !window.google?.accounts?.id && (
             <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>
-              Laster Google pålogging...
+              Loading Google sign-in...
             </p>
           )}
           {authError && <p className="error">{authError}</p>}
@@ -356,13 +356,13 @@ function App() {
             <div className="messages">
               {messages.length === 0 && (
                 <div className="empty-state">
-                  <h3>Hei! 👋</h3>
-                  <p>Still et spørsmål om GEMS eller last opp kontekst i backenden.</p>
+                  <h3>Hello! 👋</h3>
+                  <p>Ask a question about GEMS or upload context in the backend.</p>
                 </div>
               )}
               {messages.map((message) => (
                 <article key={message.id} className={`bubble ${message.role}`}>
-                  <span className="sender">{message.role === 'user' ? 'Deg' : 'GEMS Agent'}</span>
+                  <span className="sender">{message.role === 'user' ? 'You' : 'GEMS Agent'}</span>
                   <div className="message-content">
                     {message.role === 'agent' ? (
                       <ReactMarkdown>{message.text}</ReactMarkdown>
@@ -375,7 +375,7 @@ function App() {
               {isLoading && (
                 <article className="bubble agent loading">
                   <span className="sender">GEMS Agent</span>
-                  <p>Skriver svar …</p>
+                  <p>Writing response …</p>
                 </article>
               )}
       </div>
@@ -390,12 +390,12 @@ function App() {
                 value={inputValue}
                 onChange={(event) => setInputValue(event.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Skriv meldingen din…"
+                placeholder="Type your message…"
                 rows={2}
                 disabled={isLoading}
               />
               <button type="submit" disabled={isLoading || !inputValue.trim()}>
-                {isLoading ? 'Sender…' : 'Send'}
+                {isLoading ? 'Sending…' : 'Send'}
               </button>
             </form>
             {error && <p className="error">{error}</p>}

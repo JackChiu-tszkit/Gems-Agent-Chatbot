@@ -55,7 +55,7 @@ echo "   ✅ Backend started: http://localhost:8080"
 echo ""
 
 # Start frontend
-echo "🎨 Starting frontend UI (port 5173)..."
+echo "🎨 Starting frontend UI (port 3000)..."
 echo "   Using local backend API: http://localhost:8080/chat"
 
 # Set frontend environment variables (use local backend)
@@ -67,15 +67,15 @@ FRONTEND_PID=$!
 # Wait for frontend to start
 sleep 3
 
-echo "   ✅ Frontend started: http://localhost:5173"
+echo "   ✅ Frontend started: http://localhost:3000"
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "✅ Services started!"
 echo ""
 echo "   📡 Backend API:  http://localhost:8080"
-echo "   🎨 Frontend UI:   http://localhost:5173"
+echo "   🎨 Frontend UI:   http://localhost:3000"
 echo ""
-echo "   Open in browser: http://localhost:5173"
+echo "   Open in browser: http://localhost:3000"
 echo ""
 echo "   Press Ctrl+C to stop all services"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

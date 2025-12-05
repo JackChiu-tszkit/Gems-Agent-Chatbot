@@ -1,6 +1,6 @@
 # GEMS Agent Chat UI
 
-Frontend-klient for å snakke med GEMS Agent (Vertex AI + RAG) via Cloud Run API. Applikasjonen er bygget i React + TypeScript + Vite og støtter Google Workspace-pålogging for å begrense bruken til `@randstad.no`.
+Frontend client for chatting with GEMS Agent (Vertex AI + RAG) via Cloud Run API. The application is built with React + TypeScript + Vite and supports Google Workspace login to restrict usage to `@randstad.no` accounts.
 
 ## Quick Start
 
@@ -24,7 +24,31 @@ npm install
 npm run dev
 ```
 
-Frontend runs on `http://localhost:5173`, backend runs on `http://localhost:8080`.
+Frontend runs on `http://localhost:3000`, backend runs on `http://localhost:8080`.
+
+## Interface Example
+
+The GEMS Agent Chat UI provides a clean, modern chat interface. Here's what it looks like:
+
+![GEMS Agent Chat Interface](./docs/images/Example_figure.png)
+
+### Chat Interface Layout
+
+- **User Messages**: Displayed in blue rounded bubbles aligned to the right, labeled with "YOU"
+- **Agent Messages**: Displayed in light grey rounded bubbles aligned to the left, labeled with "GEMS AGENT"
+- **Message Input**: A text input field at the bottom with a "Send" button for submitting queries
+- **Keyboard Support**: Press Enter to send, Shift+Enter for a new line
+
+### Example Conversation
+
+When you start a conversation, the GEMS Agent introduces itself with:
+
+> "Hello! I am an AI agent designed to support resource management, sales enablement, market analysis, and operational automation. How can I assist you today? For example, you can ask me to:
+> - Find available consultants with specific skills.
+> - Generate a summary of a consultant's expertise.
+> - Analyze market trends based on our project data."
+
+The interface supports markdown rendering for agent responses, making it easy to display formatted text, lists, and structured information.
 
 ## Configuration
 
@@ -65,15 +89,15 @@ This will:
 
 After deployment, everyone can access the application via the URL provided by Cloud Run.
 
-## Funksjoner
+## Features
 
-- Chat-grensesnitt med historikk, bobler for bruker/agent og tastaturstøtte (Enter for å sende, Shift+Enter for linjeskift).
-- Laster-status og feilhåndtering når Cloud Run API-et svarer sent eller ikke kan nås.
-- Google Workspace login via `@randstad.no` sjekk (ID-token dekodes og verifiserer e-postdomene).
-- Tilpasset statussbanner som minner om manglende konfigurering.
+- Chat interface with history, message bubbles for user/agent, and keyboard support (Enter to send, Shift+Enter for new line).
+- Loading status and error handling when Cloud Run API responds slowly or is unreachable.
+- Google Workspace login via `@randstad.no` check (ID token is decoded and email domain is verified).
+- Custom status banner that reminds about missing configuration.
 
-## Videre tilpasning
+## Further Customization
 
-- Oppdater tekstene i `src/App.tsx` dersom du ønsker mer lokaliserte meldinger.
-- Tilpass styling i `src/App.css` og globale variabler i `src/index.css`.
-- Legg gjerne inn telemetri/logging når du kobler UI-et til produksjon.
+- Update texts in `src/App.tsx` if you want more localized messages.
+- Customize styling in `src/App.css` and global variables in `src/index.css`.
+- Consider adding telemetry/logging when connecting the UI to production.

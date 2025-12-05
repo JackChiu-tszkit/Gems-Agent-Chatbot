@@ -5,10 +5,12 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 3000,  // 使用端口 3000 避免配置冲突
+    port: 3000,  // Use port 3000 to avoid configuration conflicts
     headers: {
-      'Cross-Origin-Opener-Policy': 'same-origin',
-      'Cross-Origin-Embedder-Policy': 'require-corp',
+      // Allow popups for Google Sign-In to communicate with parent window
+      'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+      // COEP can interfere with Google Sign-In, remove if not needed
+      // 'Cross-Origin-Embedder-Policy': 'require-corp',
     },
   },
 })

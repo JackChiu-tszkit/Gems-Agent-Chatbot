@@ -1,20 +1,21 @@
 <!doctype html>
-<html lang="no">
+<html lang="en" translate="no">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google" content="notranslate" />
     <meta
       name="description"
-      content="GEMS Agent Chat UI – Vertex AI + RAG tilgjengelig for Randstad Digital via Google Workspace."
+      content="GEMS Agent Chat UI – Vertex AI + RAG available for Randstad Digital via Google Workspace."
     />
     <title>GEMS Agent Chat</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
-      // 添加错误处理，帮助调试 Google Sign-In 问题
+      // Add error handling to help debug Google Sign-In issues
       window.addEventListener('error', function(e) {
         if (e.message && e.message.includes('google')) {
-          console.error('Google Sign-In 错误:', e.message, e.filename, e.lineno);
+          console.error('Google Sign-In error:', e.message, e.filename, e.lineno);
         }
       });
     </script>

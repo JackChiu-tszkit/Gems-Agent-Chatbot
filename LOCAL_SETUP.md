@@ -1,70 +1,69 @@
-# 本地开发设置指南
+# Local Development Setup Guide
 
-## 问题诊断
+## Problem Diagnosis
 
-如果看到错误 "Kunne ikke hente svar fra GEMS Agent"，可能的原因：
+If you see the error "Could not get response from GEMS Agent", possible causes:
 
-### 1. 前端配置问题 ✅ 已修复
+### 1. Frontend Configuration Issue ✅ Fixed
 
-`.env` 文件已更新为使用本地后端：
+`.env` file has been updated to use local backend:
 ```
 VITE_CHAT_API_URL=http://localhost:8080/chat
 ```
 
-### 2. Google Cloud 认证问题 ⚠️ 需要配置
+### 2. Google Cloud Authentication Issue ⚠️ Needs Configuration
 
-本地测试需要配置 Google Cloud 认证才能调用 Vertex AI RAG Engine。
+Local testing requires Google Cloud authentication to call Vertex AI RAG Engine.
 
-## 解决方案
+## Solutions
 
-### 方法 1：配置 Application Default Credentials（推荐）
+### Method 1: Configure Application Default Credentials (Recommended)
 
 ```bash
-# 安装 gcloud（如果还没安装）
+# Install gcloud (if not already installed)
 brew install --cask google-cloud-sdk
 
-# 配置认证
+# Configure authentication
 gcloud auth application-default login
 
-# 设置项目
+# Set project
 gcloud config set project your-project-id
 ```
 
-### 方法 2：使用服务账号密钥
+### Method 2: Use Service Account Key
 
-1. 在 Google Cloud Console 创建服务账号
-2. 下载 JSON 密钥文件
-3. 设置环境变量：
+1. Create service account in Google Cloud Console
+2. Download JSON key file
+3. Set environment variable:
 ```bash
 export GOOGLE_APPLICATION_CREDENTIALS="/path/to/service-account-key.json"
 ```
 
-### 方法 3：直接部署到 Cloud Run 测试
+### Method 3: Deploy Directly to Cloud Run for Testing
 
-如果不想配置本地认证，可以直接部署到 Cloud Run：
+If you don't want to configure local authentication, you can deploy directly to Cloud Run:
 
 ```bash
 ./deploy.sh
 ```
 
-Cloud Run 会自动使用服务账号的凭据，不需要本地配置。
+Cloud Run will automatically use service account credentials, no local configuration needed.
 
-## 验证
+## Verification
 
-配置认证后，重启服务：
+After configuring authentication, restart the service:
 
 ```bash
-# 停止当前服务（Ctrl+C）
-# 然后重新启动
+# Stop current service (Ctrl+C)
+# Then restart
 ./start.sh
 ```
 
-测试 API：
+Test API:
 ```bash
 curl -X POST http://localhost:8080/chat \
   -H "Content-Type: application/json" \
-  -d '{"message": "测试"}'
+  -d '{"message": "Test"}'
 ```
 
-如果返回 RAG 结果而不是认证错误，说明配置成功！
-
+If it returns RAG results instead of authentication errors, configuration is successful!

@@ -1,85 +1,85 @@
 # GEMS Agent API
 
-后端 API 服务，用于调用 Vertex AI Agent 和 RAG Engine。
+Backend API service for calling Vertex AI Agent and RAG Engine.
 
-## 架构说明
+## Architecture Overview
 
-### 本地开发 vs 云部署
+### Local Development vs Cloud Deployment
 
-**本地开发（测试）：**
-- 使用 `.env` 文件配置环境变量
-- 运行 `python main.py` 或 `uvicorn main:app --reload`
-- 用于开发和测试
+**Local Development (Testing):**
+- Use `.env` file to configure environment variables
+- Run `python main.py` or `uvicorn main:app --reload`
+- Used for development and testing
 
-**云部署（生产）：**
-- **Cloud Run（推荐）**：无服务器，自动扩缩容
-- **VM（Compute Engine）**：完全控制，适合长期运行
-- **Cloud Functions**：轻量级，适合简单场景
+**Cloud Deployment (Production):**
+- **Cloud Run (Recommended)**: Serverless, auto-scaling
+- **VM (Compute Engine)**: Full control, suitable for long-running services
+- **Cloud Functions**: Lightweight, suitable for simple scenarios
 
-## 快速开始
+## Quick Start
 
-### 本地开发
+### Local Development
 
-1. **进入后端目录**
+1. **Navigate to backend directory**
 ```bash
 cd backend
 ```
 
-2. **安装依赖**
+2. **Install dependencies**
 ```bash
 pip install -r requirements.txt
 ```
 
-2. **配置环境变量**
+3. **Configure environment variables**
 ```bash
 cp .env.example .env
-# 编辑 .env 文件，填入你的配置
+# Edit .env file and fill in your configuration
 ```
 
-3. **运行服务**
+4. **Run the service**
 ```bash
 python main.py
-# 或
+# or
 uvicorn main:app --reload
 ```
 
-服务运行在 `http://localhost:8080`
+Service runs on `http://localhost:8080`
 
-### 部署到 Cloud Run（推荐）
+### Deploy to Cloud Run (Recommended)
 
-#### 方法 1：使用 gcloud 命令
+#### Method 1: Using gcloud command
 
 ```bash
-# 1. 构建并推送镜像
+# 1. Build and push image
 gcloud builds submit --tag gcr.io/YOUR_PROJECT_ID/gems-agent-api
 
-# 2. 部署到 Cloud Run
+# 2. Deploy to Cloud Run
 gcloud run deploy gems-agent-api \
   --image gcr.io/YOUR_PROJECT_ID/gems-agent-api \
   --region europe-north1 \
   --platform managed \
   --allow-unauthenticated \
-  --set-env-vars GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID,VERTEX_AI_LOCATION=europe-north1,VERTEX_AGENT_ID=YOUR_AGENT_ID
+  --set-env-vars GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID,VERTEX_AI_LOCATION=europe-north1,RAG_CORPUS_ID=YOUR_RAG_CORPUS_ID
 ```
 
-#### 方法 2：使用 Cloud Build
+#### Method 2: Using Cloud Build
 
 ```bash
-# 提交代码到 Git，然后触发 Cloud Build
+# Commit code to Git, then trigger Cloud Build
 gcloud builds submit --config cloudbuild.yaml
 ```
 
-#### 方法 3：通过 Google Cloud Console
+#### Method 3: Via Google Cloud Console
 
-1. 打开 Cloud Run 页面
-2. 点击 "创建服务"
-3. 选择 "从源代码部署" 或 "从容器镜像部署"
-4. 配置环境变量
-5. 部署
+1. Open Cloud Run page
+2. Click "Create Service"
+3. Select "Deploy from source" or "Deploy from container image"
+4. Configure environment variables
+5. Deploy
 
-### 部署到 VM（Compute Engine）
+### Deploy to VM (Compute Engine)
 
-1. **创建 VM 实例**
+1. **Create VM instance**
 ```bash
 gcloud compute instances create gems-agent-api-vm \
   --zone=europe-north1-a \
@@ -88,104 +88,116 @@ gcloud compute instances create gems-agent-api-vm \
   --image-project=cos-cloud
 ```
 
-2. **SSH 到 VM 并安装 Docker**
+2. **SSH to VM and install Docker**
 ```bash
 gcloud compute ssh gems-agent-api-vm --zone=europe-north1-a
 ```
 
-3. **在 VM 上运行容器**
+3. **Run container on VM**
 ```bash
-# 拉取镜像
+# Pull image
 docker pull gcr.io/YOUR_PROJECT_ID/gems-agent-api
 
-# 运行容器
+# Run container
 docker run -d \
   -p 8080:8080 \
   -e GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID \
   -e VERTEX_AI_LOCATION=europe-north1 \
-  -e VERTEX_AGENT_ID=YOUR_AGENT_ID \
+  -e RAG_CORPUS_ID=YOUR_RAG_CORPUS_ID \
   gcr.io/YOUR_PROJECT_ID/gems-agent-api
 ```
 
-## 环境变量配置
+## Environment Variable Configuration
 
-### 必需变量
+### Required Variables
 
-- `GOOGLE_CLOUD_PROJECT`: Google Cloud 项目 ID
-- `VERTEX_AI_LOCATION`: Vertex AI 区域（例如：europe-north1）
-- `VERTEX_AGENT_ID`: Vertex AI Agent ID
+- `GOOGLE_CLOUD_PROJECT`: Google Cloud Project ID
+- `VERTEX_AI_LOCATION`: Vertex AI Region (e.g., europe-north1)
+- `RAG_CORPUS_ID`: RAG Corpus ID
 
-### 可选变量
+### Optional Variables
 
-- `PORT`: 服务端口（默认：8080）
-- `GOOGLE_APPLICATION_CREDENTIALS`: 服务账号密钥路径（本地开发时可能需要）
+- `PORT`: Service port (default: 8080)
+- `FINE_TUNED_ENDPOINT_ID`: Fine-tuned Model Endpoint ID
+- `FINE_TUNED_MODEL_ID`: Fine-tuned Model ID (direct model ID)
+- `USE_FINE_TUNED_MODEL`: Whether to use Fine-tuned model (default: true)
+- `GEMINI_MODEL`: Gemini model name (default: gemini-2.5-pro)
+- `GOOGLE_APPLICATION_CREDENTIALS`: Service account key path (may be needed for local development)
 
-## 认证配置
+## Authentication Configuration
 
 ### Cloud Run / Cloud Functions
-- 自动使用默认服务账号
-- 确保服务账号有 Vertex AI 权限
+- Automatically uses default service account
+- Ensure service account has Vertex AI permissions
 
-### VM / 本地
-- 使用服务账号密钥 JSON 文件
-- 设置 `GOOGLE_APPLICATION_CREDENTIALS` 环境变量
+### VM / Local
+- Use service account key JSON file
+- Set `GOOGLE_APPLICATION_CREDENTIALS` environment variable
 
-## API 端点
+## API Endpoints
 
-- `GET /`: 健康检查
-- `GET /health`: 健康检查
-- `POST /chat`: 聊天端点
+- `GET /`: Health check
+- `GET /health`: Health check
+- `POST /chat`: Chat endpoint
   ```json
   {
-    "message": "你的问题"
+    "message": "Your question"
   }
   ```
-  返回：
+  Returns:
   ```json
   {
-    "reply": "AI 回答"
+    "reply": "AI response"
   }
   ```
 
-## 本地测试
+## Local Testing
 
 ```bash
-# 测试健康检查
+# Test health check
 curl http://localhost:8080/health
 
-# 测试聊天端点
+# Test chat endpoint
 curl -X POST http://localhost:8080/chat \
   -H "Content-Type: application/json" \
-  -d '{"message": "测试消息"}'
+  -d '{"message": "Test message"}'
 ```
 
-## 注意事项
+## LangChain RAG Integration
 
-1. **安全性**：
-   - 生产环境应该启用身份验证
-   - 限制 CORS 来源
-   - 使用 HTTPS
+The backend supports LangChain RAG Chain integration:
 
-2. **性能**：
-   - Cloud Run 自动扩缩容
-   - VM 需要手动配置负载均衡
+- **Primary**: Uses LangChain RAG Chain with Fine-tuned Model (if available)
+- **Fallback**: Falls back to direct RAG API calls if LangChain is unavailable
 
-3. **成本**：
-   - Cloud Run：按使用量付费
-   - VM：按运行时间付费
+See `langchain_rag.py` for the LangChain implementation.
 
-## 故障排除
+## Notes
 
-### 本地无法连接 Vertex AI
-- 检查 `GOOGLE_APPLICATION_CREDENTIALS` 是否设置
-- 确认服务账号有 Vertex AI 权限
+1. **Security**:
+   - Production environment should enable authentication
+   - Restrict CORS origins
+   - Use HTTPS
 
-### Cloud Run 部署失败
-- 检查环境变量是否正确
-- 查看 Cloud Run 日志
+2. **Performance**:
+   - Cloud Run auto-scales
+   - VM requires manual load balancer configuration
 
-### Agent 调用失败
-- 确认 Agent ID 正确
-- 检查 Agent 是否在指定区域
-- 查看 Vertex AI 日志
+3. **Cost**:
+   - Cloud Run: Pay per use
+   - VM: Pay per running time
 
+## Troubleshooting
+
+### Cannot connect to Vertex AI locally
+- Check if `GOOGLE_APPLICATION_CREDENTIALS` is set
+- Confirm service account has Vertex AI permissions
+
+### Cloud Run deployment fails
+- Check if environment variables are correct
+- View Cloud Run logs
+
+### RAG/Agent call fails
+- Confirm RAG Corpus ID is correct
+- Check if resources are in the specified region
+- View Vertex AI logs

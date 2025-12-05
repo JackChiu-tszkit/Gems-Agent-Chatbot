@@ -1,43 +1,43 @@
-# 安全清单 - GitHub 上传前检查
+# Security Checklist - Pre-GitHub Upload Check
 
-## ✅ 已完成的清理
+## ✅ Completed Cleanup
 
-1. **环境变量文件**
-   - ✅ `.env` 已添加到 `.gitignore`
-   - ✅ `backend/.env` 已添加到 `.gitignore`
-   - ✅ 所有 `.env.*` 文件已忽略
+1. **Environment Variable Files**
+   - ✅ `.env` added to `.gitignore`
+   - ✅ `backend/.env` added to `.gitignore`
+   - ✅ All `.env.*` files ignored
 
-2. **代码文件**
-   - ✅ `test-google-signin.html` - 移除硬编码 Client ID
-   - ✅ `backend/main.py` - 移除硬编码的 RAG_CORPUS_ID
-   - ✅ `deploy.sh` - 使用环境变量
-   - ✅ `backend/deploy.sh` - 使用环境变量
+2. **Code Files**
+   - ✅ `test-google-signin.html` - Removed hardcoded Client ID
+   - ✅ `backend/main.py` - Removed hardcoded RAG_CORPUS_ID
+   - ✅ `deploy.sh` - Uses environment variables
+   - ✅ `backend/deploy.sh` - Uses environment variables
 
-3. **文档文件**
-   - ✅ `README.md` - 使用占位符
-   - ✅ `QUICKSTART.md` - 使用占位符
-   - ✅ `LOCAL_SETUP.md` - 使用占位符
-   - ✅ `backend/DEPLOYMENT.md` - 使用占位符
+3. **Documentation Files**
+   - ✅ `README.md` - Uses placeholders
+   - ✅ `QUICKSTART.md` - Uses placeholders
+   - ✅ `LOCAL_SETUP.md` - Uses placeholders
+   - ✅ `backend/DEPLOYMENT.md` - Uses placeholders
 
-4. **调试文档（已添加到 .gitignore）**
-   - ⚠️ `DEBUG_OAUTH.md` - 包含敏感信息，已忽略
-   - ⚠️ `FIX_OAUTH_CONFIG.md` - 包含敏感信息，已忽略
-   - ⚠️ `GOOGLE_OAUTH_SETUP.md` - 包含敏感信息，已忽略
-   - ⚠️ `test-google-signin.html` - 包含敏感信息，已忽略
+4. **Debug Documentation (Added to .gitignore)**
+   - ⚠️ `DEBUG_OAUTH.md` - Contains sensitive information, ignored
+   - ⚠️ `FIX_OAUTH_CONFIG.md` - Contains sensitive information, ignored
+   - ⚠️ `GOOGLE_OAUTH_SETUP.md` - Contains sensitive information, ignored
+   - ⚠️ `test-google-signin.html` - Contains sensitive information, ignored
 
-## 📋 上传前检查清单
+## 📋 Pre-Upload Checklist
 
-- [ ] 确认 `.env` 文件不在 Git 中
-- [ ] 确认 `backend/.env` 文件不在 Git 中
-- [ ] 确认所有日志文件（*.log）不在 Git 中
-- [ ] 确认 `node_modules/` 不在 Git 中
-- [ ] 确认 `dist/` 不在 Git 中
-- [ ] 确认 `venv/` 和 `backend/venv/` 不在 Git 中
-- [ ] 确认调试文档不在 Git 中
+- [ ] Confirm `.env` file is not in Git
+- [ ] Confirm `backend/.env` file is not in Git
+- [ ] Confirm all log files (*.log) are not in Git
+- [ ] Confirm `node_modules/` is not in Git
+- [ ] Confirm `dist/` is not in Git
+- [ ] Confirm `venv/` and `backend/venv/` are not in Git
+- [ ] Confirm debug documentation is not in Git
 
-## 🔒 敏感信息清单
+## 🔒 Sensitive Information Checklist
 
-以下信息不应出现在代码中（应使用环境变量）：
+The following information should NOT appear in code (should use environment variables):
 
 - ❌ Google OAuth Client ID
 - ❌ Google Cloud Project ID
@@ -47,9 +47,9 @@
 - ❌ Passwords
 - ❌ Tokens
 
-## 📝 环境变量模板
+## 📝 Environment Variable Template
 
-创建 `.env.example` 文件作为模板（已创建）：
+Create `.env.example` file as template (already created):
 
 ```bash
 # Frontend
@@ -64,21 +64,21 @@ GEMINI_MODEL=gemini-2.5-pro
 SYSTEM_INSTRUCTION=your-system-instruction
 ```
 
-## 🚀 上传到 GitHub 前的最后检查
+## 🚀 Final Check Before Uploading to GitHub
 
-运行以下命令检查：
+Run the following commands to check:
 
 ```bash
-# 检查是否有敏感文件被跟踪
+# Check if sensitive files are tracked
 git status
 
-# 检查 .gitignore 是否生效
+# Check if .gitignore is working
 git check-ignore .env backend/.env
 
-# 检查是否有硬编码的敏感信息
+# Check for hardcoded sensitive information
 grep -r "235818822530" . --exclude-dir=node_modules --exclude-dir=dist
 grep -r "test-project-306412" . --exclude-dir=node_modules --exclude-dir=dist
 grep -r "4611686018427387904" . --exclude-dir=node_modules --exclude-dir=dist
 ```
 
-如果以上命令没有输出（除了 .gitignore 中的文件），说明清理成功！
+If the above commands have no output (except files in .gitignore), cleanup is successful!

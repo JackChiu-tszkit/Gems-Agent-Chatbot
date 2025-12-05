@@ -4,7 +4,9 @@ import './index.css'
 import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+  // Temporarily disabled StrictMode to prevent double-rendering issues with Google Sign-In
+  // The App component already has duplicate initialization prevention logic
+  // <StrictMode>
     <App />
-  </StrictMode>,
+  // </StrictMode>,
 )

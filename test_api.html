@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>API 测试</title>
+    <title>API Test</title>
 </head>
 <body>
-    <h1>GEMS Agent API 测试</h1>
-    <button onclick="testAPI()">测试 API</button>
+    <h1>GEMS Agent API Test</h1>
+    <button onclick="testAPI()">Test API</button>
     <div id="result"></div>
     
     <script>
         async function testAPI() {
             const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = '测试中...';
+            resultDiv.innerHTML = 'Testing...';
             
             try {
                 const response = await fetch('http://localhost:8080/chat', {
@@ -19,7 +19,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ message: '测试消息' })
+                    body: JSON.stringify({ message: 'Test message' })
                 });
                 
                 console.log('Response status:', response.status);
@@ -33,15 +33,15 @@
                 console.log('Response data:', data);
                 
                 resultDiv.innerHTML = `
-                    <h2>✅ 成功</h2>
-                    <p>状态码: ${response.status}</p>
-                    <p>Reply 长度: ${data.reply?.length || 0}</p>
+                    <h2>✅ Success</h2>
+                    <p>Status Code: ${response.status}</p>
+                    <p>Reply Length: ${data.reply?.length || 0}</p>
                     <pre>${JSON.stringify(data, null, 2).substring(0, 500)}...</pre>
                 `;
             } catch (error) {
                 console.error('Error:', error);
                 resultDiv.innerHTML = `
-                    <h2>❌ 错误</h2>
+                    <h2>❌ Error</h2>
                     <p>${error.message}</p>
                     <pre>${error.stack}</pre>
                 `;

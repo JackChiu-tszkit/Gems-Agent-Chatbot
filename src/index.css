@@ -8,7 +8,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   
-  /* Randstad Digital 品牌色 - 蓝色主题 */
+  /* Randstad Digital brand colors - blue theme */
   --randstad-blue: #0066CC;
   --randstad-blue-dark: #0052A3;
   --randstad-blue-light: #3385D6;
@@ -30,16 +30,16 @@
 body {
   margin: 0;
   min-height: 100vh;
-  /* 选项 1: 纯白色背景（简洁专业） */
+  /* Option 1: Pure white background (clean and professional) */
   background: #ffffff;
   
-  /* 选项 2: 非常浅的灰色背景（现代感） */
+  /* Option 2: Very light gray background (modern feel) */
   /* background: #FAFBFC; */
   
-  /* 选项 3: 微妙的渐变（从白色到极浅蓝） */
+  /* Option 3: Subtle gradient (from white to very light blue) */
   /* background: linear-gradient(180deg, #ffffff 0%, #F8FAFC 100%); */
   
-  /* 选项 4: 浅灰色到白色渐变 */
+  /* Option 4: Light gray to white gradient */
   /* background: linear-gradient(135deg, #F5F7FA 0%, #ffffff 100%); */
   
   padding: 2rem;
