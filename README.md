@@ -1,6 +1,8 @@
 # GEMS Agent Chat UI
 
-Frontend client for chatting with GEMS Agent (Vertex AI + RAG) via Cloud Run API. The application is built with React + TypeScript + Vite and supports Google Workspace login to restrict usage to `@randstad.no` accounts.
+Frontend client for chatting with GEMS Agent powered by **Vertex AI RAG Engine**, **LangChain**, and **Fine-tuned Gemini Models** via Cloud Run API. The application is built with React + TypeScript + Vite and supports Google Workspace login to restrict usage to `@randstad.no` accounts.
+
+The backend implements a LangChain-based RAG (Retrieval-Augmented Generation) workflow that combines Vertex AI Managed RAG Engine for document retrieval with fine-tuned Gemini models for generating standardized, business-aligned responses.
 
 ## Quick Start
 
