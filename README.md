@@ -4,6 +4,46 @@ Frontend client for chatting with GEMS Agent powered by **Vertex AI RAG Engine**
 
 The backend implements a LangChain-based RAG (Retrieval-Augmented Generation) workflow that combines Vertex AI Managed RAG Engine for document retrieval with fine-tuned Gemini models for generating standardized, business-aligned responses.
 
+## What This Project Does
+
+- Provides a web chatbot that answers business questions by grounding responses in your company documents.
+- Uses Vertex AI Managed RAG to retrieve relevant context from a RAG Corpus.
+- Uses LangChain to orchestrate retrieval → prompt assembly → fine-tuned Gemini generation.
+- Enforces Google Workspace login (only `@randstad.no`) before allowing chat.
+- Deploys as a single Cloud Run service (frontend + backend) behind one URL.
+
+## Technology Overview
+
+- **Frontend**: React + TypeScript + Vite; Google Identity Services for OAuth; domain check `@randstad.no`.
+- **Backend**: FastAPI with LangChain LCEL pipeline; custom retriever (`VertexRAGEngineRetriever`) and custom LLM (`VertexCustomEndpoint`).
+- **AI**: Vertex AI Managed RAG Engine (retrieval) + Fine-tuned Gemini (generation), with fallback to standard Gemini if fine-tuned is unavailable.
+- **Infra**: Cloud Run for hosting; `.env` driven configuration; scripts for local/dev/prod workflows.
+
+## Google Cloud Setup (Minimal Steps)
+
+1) **Enable APIs**
+   - Enable Vertex AI API, Cloud Run API, Artifact Registry API, Cloud Build API.
+
+2) **Create a RAG Corpus**
+   - In Vertex AI RAG, create a corpus and note `RAG_CORPUS_ID`.
+   - Ingest documents (GCS, BigQuery, or direct upload) and build the index.
+
+3) **Fine-tuned Gemini Model**
+   - Fine-tune Gemini in Vertex AI; note `FINE_TUNED_MODEL_ID`.
+   - (Optional) Deploy it to an endpoint; note `FINE_TUNED_ENDPOINT_ID`.
+
+4) **Service Account and Permissions**
+   - Create a service account for Cloud Run execution.
+   - Grant: Vertex AI User, Storage Object Viewer (if using GCS), Artifact Registry Reader, Cloud Run Invoker (as needed).
+
+5) **Configure Environment**
+   - Set `GOOGLE_CLOUD_PROJECT`, `VERTEX_AI_LOCATION`, `RAG_CORPUS_ID`, `FINE_TUNED_MODEL_ID` (and optionally `FINE_TUNED_ENDPOINT_ID`), `VITE_GOOGLE_CLIENT_ID`.
+   - Put backend vars in `backend/.env`; frontend vars in project root `.env`.
+
+6) **Deploy**
+   - From project root: `./deploy.sh` (builds frontend, packages backend, deploys to Cloud Run).
+   - After deploy, use the Cloud Run URL as the chatbot base; ensure the allowed OAuth origin matches this URL.
+
 ## Quick Start
 
 ### Local Testing (Run Frontend and Backend Together)
