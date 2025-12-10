@@ -96,7 +96,7 @@ echo "   Service URL: ${SERVICE_URL}"
 echo ""
 echo "   Everyone can now access GEMS Agent Chatbot via this link!"
 echo "   - Frontend UI and API are on the same service"
-echo "   - Login with @randstad.no email"
+echo "   - Login with @company domain email"
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 

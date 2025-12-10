@@ -64,7 +64,7 @@ https://gems-agent-chatbot-xxxxx.run.app
 
 **Everyone can access via this link:**
 1. Open the link
-2. Login with @randstad.no email
+2. Login with @company domain email
 3. Start using GEMS Agent
 
 ## 📁 Project Structure

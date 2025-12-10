@@ -1,6 +1,6 @@
 # GEMS Agent Chat UI
 
-Frontend client for chatting with GEMS Agent powered by **Vertex AI RAG Engine**, **LangChain**, and **Fine-tuned Gemini Models** via Cloud Run API. The application is built with React + TypeScript + Vite and supports Google Workspace login to restrict usage to `@randstad.no` accounts.
+Frontend client for chatting with GEMS Agent powered by **Vertex AI RAG Engine**, **LangChain**, and **Fine-tuned Gemini Models** via Cloud Run API. The application is built with React + TypeScript + Vite and supports Google Workspace login to restrict usage to `@company` domain accounts.
 
 The backend implements a LangChain-based RAG (Retrieval-Augmented Generation) workflow that combines Vertex AI Managed RAG Engine for document retrieval with fine-tuned Gemini models for generating standardized, business-aligned responses.
 
@@ -9,12 +9,12 @@ The backend implements a LangChain-based RAG (Retrieval-Augmented Generation) wo
 - Provides a web chatbot that answers business questions by grounding responses in your company documents.
 - Uses Vertex AI Managed RAG to retrieve relevant context from a RAG Corpus.
 - Uses LangChain to orchestrate retrieval → prompt assembly → fine-tuned Gemini generation.
-- Enforces Google Workspace login (only `@randstad.no`) before allowing chat.
+- Enforces Google Workspace login (only `@company` domain) before allowing chat.
 - Deploys as a single Cloud Run service (frontend + backend) behind one URL.
 
 ## Technology Overview
 
-- **Frontend**: React + TypeScript + Vite; Google Identity Services for OAuth; domain check `@randstad.no`.
+- **Frontend**: React + TypeScript + Vite; Google Identity Services for OAuth; domain check `@company`.
 - **Backend**: FastAPI with LangChain LCEL pipeline; custom retriever (`VertexRAGEngineRetriever`) and custom LLM (`VertexCustomEndpoint`).
 - **AI**: Vertex AI Managed RAG Engine (retrieval) + Fine-tuned Gemini (generation), with fallback to standard Gemini if fine-tuned is unavailable.
 - **Infra**: Cloud Run for hosting; `.env` driven configuration; scripts for local/dev/prod workflows.
@@ -209,7 +209,7 @@ After deployment, everyone can access the application via the URL provided by Cl
 
 - Chat interface with history, message bubbles for user/agent, and keyboard support (Enter to send, Shift+Enter for new line).
 - Loading status and error handling when Cloud Run API responds slowly or is unreachable.
-- Google Workspace login via `@randstad.no` check (ID token is decoded and email domain is verified).
+- Google Workspace login via `@company` domain check (ID token is decoded and email domain is verified).
 - Custom status banner that reminds about missing configuration.
 
 ## Further Customization

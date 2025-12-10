@@ -31,7 +31,7 @@ interface GoogleJwtPayload extends JwtPayload {
   picture?: string
 }
 
-const EMAIL_DOMAIN = '@randstad.no'
+const EMAIL_DOMAIN = '@company'
 
 const generateId = () => crypto.randomUUID()
 
@@ -60,7 +60,7 @@ function App() {
       
       if (!email.endsWith(EMAIL_DOMAIN)) {
         setUser(null)
-        setAuthError('Only employees with @randstad.no accounts can use GEMS Agent.')
+        setAuthError('Only employees with @company domain accounts can use GEMS Agent.')
         console.warn('Email does not match required domain:', email)
         return
       }
@@ -338,7 +338,7 @@ function App() {
       {!isAuthorized ? (
         <section className="auth-card">
           <h2>Sign in with Google Workspace</h2>
-          <p>Access is restricted to @randstad.no accounts.</p>
+          <p>Access is restricted to @company domain accounts.</p>
           <div ref={loginButtonRef} aria-live="polite" style={{ minHeight: '40px' }} />
           {!isClientIdConfigured && (
             <p className="error">Google Client ID is not configured.</p>
